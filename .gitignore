@@ -1,0 +1,26 @@
+# Binaries
+noraneko-winupdater
+noraneko-winupdater.exe
+Noraneko-WinUpdater.exe
+*.exe
+
+# Config files (local)
+*.ini
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+build/
+
+# Test artifacts
+coverage.out
+coverage.html
