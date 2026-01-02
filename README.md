@@ -1,8 +1,10 @@
 # Noraneko WinUpdater
+by NyanRus: [GitHub](https://github.com/nyanrus) | [Buy me a milk tea](https://buymeacoffee.com/nyanrus) 🧋
 
 An automatic update tool for [Noraneko Browser](https://github.com/AuroraLite/noraneko) on Windows.
 
-This project is a **Go port** based on the excellent [LibreWolf WinUpdater](https://codeberg.org/ltguillaume/librewolf-winupdater) by [ltguillaume](https://codeberg.org/ltguillaume). Special thanks to ltguillaume for the original AutoHotkey implementation which served as the foundation for this project.
+This project is a **Go port** based on the [LibreWolf WinUpdater](https://codeberg.org/ltguillaume/librewolf-winupdater) by [ltguillaume](https://codeberg.org/ltguillaume).
+Special thanks to ltguillaume for original AutoHotkey Implementation!
 
 ## Features
 
@@ -88,10 +90,6 @@ GOOS=windows GOARCH=amd64 go build -o Noraneko-WinUpdater.exe .
 ## Credits
 
 - **Original LibreWolf WinUpdater** by [ltguillaume](https://codeberg.org/ltguillaume): [Codeberg](https://codeberg.org/ltguillaume) | [GitHub](https://github.com/ltguillaume) | [Buy me a beer](https://coff.ee/ltguillaume) 🍺
-  
-  This project is a Go port of the [LibreWolf WinUpdater](https://codeberg.org/ltguillaume/librewolf-winupdater) which was originally written in AutoHotkey. The original project made updating LibreWolf for Windows much easier, and we're grateful for ltguillaume's work that served as the foundation for this adaptation.
-
-- **Noraneko Browser** by the [f3liz-dev team](https://github.com/f3liz-dev/noraneko)
 
 ## License
 
