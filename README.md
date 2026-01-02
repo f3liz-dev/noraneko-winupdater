@@ -1,5 +1,4 @@
 # Noraneko WinUpdater
-by NyanRus: [GitHub](https://github.com/nyanrus) | [Buy me a milk tea](https://buymeacoffee.com/nyanrus) 🧋
 
 An automatic update tool for [Noraneko Browser](https://github.com/AuroraLite/noraneko) on Windows.
 
