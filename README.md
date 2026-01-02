@@ -1,6 +1,6 @@
 # Noraneko WinUpdater
 
-An automatic update tool for [Noraneko Browser](https://github.com/AuroraLite/noraneko) on Windows.
+An automatic update tool for [Noraneko Browser](https://github.com/f3liz-dev/noraneko) on Windows.
 
 This project is a **Go port** based on the [LibreWolf WinUpdater](https://codeberg.org/ltguillaume/librewolf-winupdater) by [ltguillaume](https://codeberg.org/ltguillaume).
 Special thanks to ltguillaume for original AutoHotkey Implementation!
