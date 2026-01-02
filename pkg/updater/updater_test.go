@@ -67,6 +67,14 @@ func TestIsNewerVersion(t *testing.T) {
 		{"0.0.0", "1.0.0", true},
 		{"v1.0.0", "v1.0.1", true},
 		{"v1.0.0", "1.0.1", true},
+		{"1.0.0", "1.1.0", true},     // Minor version bump
+		{"1.1.0", "1.0.1", false},    // Current is newer
+		{"1.0.0", "2.0.0", true},     // Major version bump
+		{"2.0.0", "1.9.9", false},    // Current major is higher
+		{"1.0.0-beta", "1.0.0", false}, // Prerelease vs release (stripped, so equal)
+		{"1.10.0", "1.9.0", false},   // Double digit version
+		{"1.2.3", "1.2.4", true},     // Patch version
+		{"1.2.4", "1.2.3", false},    // Current patch is higher
 	}
 
 	for _, tt := range tests {

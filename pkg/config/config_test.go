@@ -3,6 +3,7 @@ package config
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -115,19 +116,19 @@ func TestSave(t *testing.T) {
 	}
 
 	content := string(data)
-	if !contains(content, "Path=C:\\Test\\noraneko.exe") {
+	if !strings.Contains(content, "Path=C:\\Test\\noraneko.exe") {
 		t.Error("Saved config missing correct path")
 	}
 
-	if !contains(content, "UpdateSelf=0") {
+	if !strings.Contains(content, "UpdateSelf=0") {
 		t.Error("Saved config missing UpdateSelf=0")
 	}
 
-	if !contains(content, "IgnoreCrlErrors=1") {
+	if !strings.Contains(content, "IgnoreCrlErrors=1") {
 		t.Error("Saved config missing IgnoreCrlErrors=1")
 	}
 
-	if !contains(content, "Branch=stable") {
+	if !strings.Contains(content, "Branch=stable") {
 		t.Error("Saved config missing Branch=stable")
 	}
 }
@@ -161,28 +162,15 @@ func TestLogEntry(t *testing.T) {
 	}
 
 	content := string(data)
-	if !contains(content, "[Log]") {
+	if !strings.Contains(content, "[Log]") {
 		t.Error("Config missing [Log] section")
 	}
 
-	if !contains(content, "LastRun=2024-01-01 12:00:00") {
+	if !strings.Contains(content, "LastRun=2024-01-01 12:00:00") {
 		t.Error("Config missing LastRun entry")
 	}
 
-	if !contains(content, "LastResult=No new version found") {
+	if !strings.Contains(content, "LastResult=No new version found") {
 		t.Error("Config missing LastResult entry")
 	}
-}
-
-func contains(s, substr string) bool {
-	return len(s) >= len(substr) && (s == substr || len(s) > 0 && containsHelper(s, substr))
-}
-
-func containsHelper(s, substr string) bool {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
 }

@@ -190,17 +190,76 @@ func (u *Updater) getLatestRelease() (*Release, error) {
 	return &release, nil
 }
 
-// isNewerVersion compares two version strings
+// isNewerVersion compares two version strings using semantic versioning
 func (u *Updater) isNewerVersion(current, latest string) bool {
-	// Simple comparison - could be improved with semantic versioning
 	current = strings.TrimPrefix(current, "v")
 	latest = strings.TrimPrefix(latest, "v")
-	
+
 	if current == "" || current == "0.0.0" {
 		return true
 	}
-	
-	return latest != current
+
+	if latest == current {
+		return false
+	}
+
+	// Parse versions into parts
+	currentParts := parseVersion(current)
+	latestParts := parseVersion(latest)
+
+	// Compare each part
+	maxLen := len(currentParts)
+	if len(latestParts) > maxLen {
+		maxLen = len(latestParts)
+	}
+
+	for i := 0; i < maxLen; i++ {
+		var cp, lp int
+		if i < len(currentParts) {
+			cp = currentParts[i]
+		}
+		if i < len(latestParts) {
+			lp = latestParts[i]
+		}
+
+		if lp > cp {
+			return true
+		} else if lp < cp {
+			return false
+		}
+	}
+
+	return false
+}
+
+// parseVersion parses a version string into integer parts
+func parseVersion(v string) []int {
+	// Remove any prerelease suffix (e.g., -beta, -alpha, -nightly)
+	if idx := strings.IndexAny(v, "-+"); idx != -1 {
+		v = v[:idx]
+	}
+
+	parts := strings.Split(v, ".")
+	result := make([]int, 0, len(parts))
+
+	for _, p := range parts {
+		// Extract only the numeric prefix
+		numStr := ""
+		for _, c := range p {
+			if c >= '0' && c <= '9' {
+				numStr += string(c)
+			} else {
+				break
+			}
+		}
+		if numStr != "" {
+			var num int
+			fmt.Sscanf(numStr, "%d", &num)
+			result = append(result, num)
+		}
+	}
+
+	return result
 }
 
 // downloadAndInstall downloads and installs the update
@@ -432,10 +491,19 @@ func (u *Updater) unzip(src, dest string) error {
 	}
 	defer r.Close()
 
+	// Clean and normalize the destination path
+	dest = filepath.Clean(dest)
+
 	for _, f := range r.File {
+		// Clean the file name from the zip to prevent path traversal
+		cleanName := filepath.Clean(f.Name)
+		if strings.HasPrefix(cleanName, "..") || filepath.IsAbs(cleanName) {
+			return fmt.Errorf("illegal file path in archive: %s", f.Name)
+		}
+
 		// Prevent ZipSlip vulnerability
-		fpath := filepath.Join(dest, f.Name)
-		if !strings.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) {
+		fpath := filepath.Join(dest, cleanName)
+		if !strings.HasPrefix(filepath.Clean(fpath), dest+string(os.PathSeparator)) && filepath.Clean(fpath) != dest {
 			return fmt.Errorf("illegal file path: %s", fpath)
 		}
 
