@@ -24,3 +24,8 @@ build/
 # Test artifacts
 coverage.out
 coverage.html
+
+
+# Added by cargo
+
+/target/

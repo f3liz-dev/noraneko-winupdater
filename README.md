@@ -2,7 +2,7 @@
 
 An automatic update tool for [Noraneko Browser](https://github.com/f3liz-dev/noraneko) on Windows.
 
-This project is a **Go port** based on the [LibreWolf WinUpdater](https://codeberg.org/ltguillaume/librewolf-winupdater) by [ltguillaume](https://codeberg.org/ltguillaume).
+This project is a **Rust implementation** based on the [LibreWolf WinUpdater](https://codeberg.org/ltguillaume/librewolf-winupdater) by [ltguillaume](https://codeberg.org/ltguillaume).
 Special thanks to ltguillaume for original AutoHotkey Implementation!
 
 ## Features
@@ -75,7 +75,7 @@ Branch=nightly
 ## Building from Source
 
 Requirements:
-- Go 1.21 or later
+- Rust 1.76+ with Cargo
 
 ```bash
 # Clone the repository
@@ -83,7 +83,7 @@ git clone https://github.com/f3liz-dev/noraneko-winupdater
 cd noraneko-winupdater
 
 # Build for Windows
-GOOS=windows GOARCH=amd64 go build -o Noraneko-WinUpdater.exe .
+cargo build --release --target x86_64-pc-windows-msvc
 ```
 
 ## Credits
