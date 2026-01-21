@@ -33,7 +33,9 @@ struct TempFileCleanup {
 
 impl Drop for TempFileCleanup {
     fn drop(&mut self) {
-        let _ = fs::remove_file(&self.path);
+        if let Err(err) = fs::remove_file(&self.path) {
+            eprintln!("Warning: failed to remove {}: {}", self.path.display(), err);
+        }
     }
 }
 
@@ -269,15 +271,11 @@ impl Updater {
         let is_portable = self.cfg.is_portable() || self.opts.portable;
         if is_portable || asset.name.to_lowercase().ends_with(".zip") {
             println!("Extracting...");
-            let result = self.extract_portable(&download_path);
-            let _ = fs::remove_file(&download_path);
-            return result;
+            return self.extract_portable(&download_path);
         }
 
         println!("Installing...");
-        let result = self.run_installer(&download_path);
-        let _ = fs::remove_file(&download_path);
-        result?;
+        self.run_installer(&download_path)?;
         Ok(())
     }
 
@@ -363,8 +361,10 @@ impl Updater {
     ) -> Result<(), Box<dyn std::error::Error>> {
         let checksum_path = self.cfg.work_dir.join(&checksum_asset.name);
         self.download_file(&checksum_asset.browser_download_url, &checksum_path)?;
+        let _checksum_cleanup = TempFileCleanup {
+            path: checksum_path.clone(),
+        };
         let data = fs::read_to_string(&checksum_path)?;
-        let _ = fs::remove_file(&checksum_path);
 
         let mut expected_hash = String::new();
         for line in data.lines() {
@@ -451,7 +451,7 @@ impl Updater {
                 return Err(format!("illegal file path in archive: {name}").into());
             }
             let fpath = dest.join(clean_name);
-            if !fpath.starts_with(&dest) && fpath != dest {
+            if !fpath.starts_with(&dest) || fpath == dest {
                 return Err(format!("illegal file path: {}", fpath.display()).into());
             }
 

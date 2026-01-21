@@ -208,7 +208,7 @@ impl Config {
         String::new()
     }
 
-pub fn is_portable(&self) -> bool {
+    pub fn is_portable(&self) -> bool {
         let portable_path = self.exe_dir.join(format!("{BROWSER_NAME}-Portable.exe"));
         portable_path.exists()
     }
